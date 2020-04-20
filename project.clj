@@ -12,6 +12,10 @@
                  [reagent "0.10.0"]
                  [reagent-utils "0.3.3"]
                  [com.taoensso/sente "1.15.0"]
+                 [metosin/reitit "0.4.2"]
+                 [pez/clerk "1.0.0"]
+                 [venantius/accountant "0.2.5"
+                  :exclusions [org.clojure/tools.reader]]
                  [com.taoensso/timbre "4.10.0"]]
   :plugins [[lein-ring "0.12.5"]
             [lein-pprint         "1.2.0"]

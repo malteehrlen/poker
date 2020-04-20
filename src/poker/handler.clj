@@ -1,8 +1,8 @@
 (ns poker.handler
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
-            [hiccup.core :as hiccup]
             [taoensso.sente :as sente]
+            [hiccup.page :refer [include-js include-css html5]]
             [ring.middleware.defaults :refer [wrap-defaults site-defaults]]
             [org.httpkit.server :as http-kit]
             [taoensso.sente.server-adapters.http-kit :refer (get-sch-adapter)]))
@@ -23,24 +23,29 @@
    [:meta {:charset "utf-8"}]
    [:meta {:name "viewport"
            :content "width=device-width, initial-scale=1"}]
-   (include-css (if (env :dev) "/css/site.css" "/css/site.min.css"))])
+   (include-css "/css/site.css")])
+
+(def loading-page
+  [:div#app
+   [:h2 "Loading..."]])
 
 (defn landing-page []
   (html5
     (head)
     [:body {:class "body-container"}
-     mount-target
-     (include-js "/poker/main.js")]))
+     loading-page
+     (include-js "/main.js")]))
 
-(defn landing-page-handler [req]
+(defn landing-page-handler []
   {:status 200
    :headers {"Content-Type" "text/html"}
    :body (landing-page)})
 
 (defroutes app-routes
-  (GET "/" req (landing-page-handler req))
+  (GET "/" [] (landing-page-handler))
   (GET  "/chsk" req (ring-ajax-get-or-ws-handshake req))
   (POST "/chsk" req (ring-ajax-post                req))
+  (route/resources "/")
   (route/not-found "Not Found"))
 
 (def app
