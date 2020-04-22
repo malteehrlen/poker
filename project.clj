@@ -18,11 +18,13 @@
                  [venantius/accountant "0.2.5"
                   :exclusions [org.clojure/tools.reader]]
                  [com.taoensso/timbre "4.10.0"]]
-  :plugins [[lein-ring "0.12.5"]
+  :plugins [[lein-nsorg "0.3.0"]
             [lein-pprint         "1.2.0"]
             [lein-ancient        "0.6.15"]
             [com.cemerick/austin "0.1.6"]
             [lein-cljsbuild      "1.1.7"]]
+
+  :main poker.clj.main
 
   :cljsbuild
   {:builds
@@ -34,7 +36,6 @@
 
   :clean-targets ^{:protect false} ["resources/public/main.js"]
 
-  :ring {:handler poker.clj.handler/app :init poker.clj.handler/start-router! :destroy poker.clj.handler/stop-router!}
   :profiles
   
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]

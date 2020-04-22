@@ -1,12 +1,12 @@
 (ns poker.cljs.client
   (:require
+   [accountant.core :as accountant]
+   [clerk.core :as clerk]
+   [poker.cljs.components.room-component :as room-component :refer [room-component]]
    [poker.cljs.localstorage :as localstorage]
    [reagent.core :as reagent :refer [atom]]
    [reagent.session :as session]
-   [reitit.frontend :as reitit]
-   [poker.cljs.components.room-component :as room-component :refer [room-component]]
-   [clerk.core :as clerk]
-   [accountant.core :as accountant]))
+   [reitit.frontend :as reitit]))
 
 ;; -------------------------
 ;; Routes

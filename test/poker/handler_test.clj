@@ -1,7 +1,7 @@
 (ns poker.handler-test
   (:require [clojure.test :refer :all]
-            [ring.mock.request :as mock]
-            [poker.handler :refer :all]))
+            [poker.handler :refer :all]
+            [ring.mock.request :as mock]))
 
 (deftest test-app
   (testing "main route"

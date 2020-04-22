@@ -1,6 +1,6 @@
 (ns poker.cljs.components.room-component
-  (:require [poker.cljs.localstorage :as localstorage]
-            [clojure.string]
+  (:require [clojure.string]
+            [poker.cljs.localstorage :as localstorage]
             [poker.cljs.sente.router :as router]))
 
 (defn members-list [props]
