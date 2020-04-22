@@ -1,6 +1,6 @@
 (ns poker.cljs.client
   (:require
-   poker.clj.localstorage
+   [poker.cljs.localstorage :as localstorage]
    [reagent.core :as reagent :refer [atom]]
    [reagent.session :as session]
    [reitit.frontend :as reitit]
@@ -47,14 +47,14 @@
        :on-click #(handle-room-open @room-id @user-id)}]]])))
 
 (defn get-user-id []
-  (or (localstorage.get-item :user-id) ""))
+  (or (localstorage/get-item :user-id) ""))
 
 (defn get-room-id []
-  (or (localstorage.get-item :room-id) ""))
+  (or (localstorage/get-item :room-id) ""))
 
 (defn handle-room-open [room-id user-id]
-  (localstorage.set-item! :room-id room-id)
-  (localstorage.set-item! :user-id user-id)
+  (localstorage/set-item! :room-id room-id)
+  (localstorage/set-item! :user-id user-id)
   (accountant/navigate! (path-for :room {:room-id room-id})))
 
 (defn room-page []
