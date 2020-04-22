@@ -6,6 +6,7 @@
                  [org.clojure/clojurescript "1.10.597"]
                  [org.clojure/core.async "0.5.527"]
                  [compojure "1.6.1"]
+				 [ring "1.6.1"]
                  [ring/ring-defaults "0.3.2"]
                  [hiccup "1.0.5"]
                  [http-kit "2.3.0"]
@@ -26,14 +27,14 @@
   :cljsbuild
   {:builds
    [{:id :cljs-client
-    :source-paths ["src/poker"]
+    :source-paths ["src/poker/cljs"]
     :compiler {:output-to "resources/public/main.js"
                :optimizations :whitespace #_:advanced
                :pretty-print true}}]}
 
   :clean-targets ^{:protect false} ["resources/public/main.js"]
 
-  :ring {:handler poker.handler/app}
+  :ring {:handler poker.clj.handler/app :init poker.clj.handler/start-router! :destroy poker.clj.handler/stop-router!}
   :profiles
   
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
