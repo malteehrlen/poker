@@ -1,6 +1,6 @@
 (ns poker.clj.sente.router (:require
   [poker.clj.sente.channels :refer [ch-chsk]]
-  [poker.clj.sente.event-handler :refer (event-msg-handler)]
+  [poker.clj.sente.event-handler :refer (event)]
   [taoensso.sente :as sente]
   [org.httpkit.server :as http-kit]
   [taoensso.sente.server-adapters.http-kit :refer (get-sch-adapter)]
@@ -14,4 +14,4 @@
       (stop-router!)
       (reset! router_
               (sente/start-server-chsk-router!
-                ch-chsk event-msg-handler)))
+                ch-chsk event)))

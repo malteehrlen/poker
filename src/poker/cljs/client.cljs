@@ -3,7 +3,7 @@
    [accountant.core :as accountant]
    [clerk.core :as clerk]
    [poker.cljs.components.room-component :as room-component :refer [room-component]]
-   [poker.cljs.localstorage :as localstorage]
+   [poker.cljs.localstorage :as localstorage :refer (get-room-id get-user-id)]
    [reagent.core :as reagent :refer [atom]]
    [reagent.session :as session]
    [reitit.frontend :as reitit]))
@@ -11,15 +11,15 @@
 ;; -------------------------
 ;; Routes
 
-(def router
+(def ring-router
   (reitit/router
    [["/" :index]
     ["/room/:room-id" :room]]))
 
 (defn path-for [route & [params]]
   (if params
-    (:path (reitit/match-by-name router route params))
-    (:path (reitit/match-by-name router route))))
+    (:path (reitit/match-by-name ring-router route params))
+    (:path (reitit/match-by-name ring-router route))))
 
 ;; -------------------------
 ;; Page components
@@ -45,12 +45,6 @@
       {:type "button"
        :value "start pokering"
        :on-click #(handle-room-open @room-id @user-id)}]]])))
-
-(defn get-user-id []
-  (or (localstorage/get-item :user-id) ""))
-
-(defn get-room-id []
-  (or (localstorage/get-item :room-id) ""))
 
 (defn handle-room-open [room-id user-id]
   (localstorage/set-item! :room-id room-id)
@@ -97,7 +91,7 @@
   (accountant/configure-navigation!
    {:nav-handler
     (fn [path]
-      (let [match (reitit/match-by-path router path)
+      (let [match (reitit/match-by-path ring-router path)
             current-page (:name (:data  match))
             route-params (:path-params match)]
         (reagent/after-render clerk/after-render!)
@@ -107,7 +101,7 @@
         ))
     :path-exists?
     (fn [path]
-      (boolean (reitit/match-by-path router path)))})
+      (boolean (reitit/match-by-path ring-router path)))})
   (accountant/dispatch-current!)
   (mount-root))
 

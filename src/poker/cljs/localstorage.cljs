@@ -14,3 +14,9 @@
     "Remove the browser's localStorage value for the given `key`"
       [key]
         (.removeItem (.-localStorage js/window) key))
+
+(defn get-user-id []
+  (or (get-item :user-id) ""))
+
+(defn get-room-id []
+  (or (get-item :room-id) ""))

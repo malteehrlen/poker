@@ -15,6 +15,8 @@
                  [com.taoensso/sente "1.15.0"]
                  [metosin/reitit "0.4.2"]
                  [pez/clerk "1.0.0"]
+				 [danlentz/clj-uuid "0.1.9"]
+				 [digest "1.4.9"]
                  [venantius/accountant "0.2.5"
                   :exclusions [org.clojure/tools.reader]]
                  [com.taoensso/timbre "4.10.0"]]
