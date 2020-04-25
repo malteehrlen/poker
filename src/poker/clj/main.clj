@@ -2,8 +2,7 @@
   (:require [poker.clj.sente.router :as router]
             [org.httpkit.server :as http-kit]
             [taoensso.timbre :as timbre :refer (tracef debugf infof warnf errorf)]
-            [poker.clj.handler :as handler])
-  )
+            [poker.clj.handler :as handler]))
 
 (defonce    web-server_ (atom nil)) ; (fn stop [])
 (defn  stop-web-server! [] (when-let [stop-fn @web-server_] (stop-fn)))
@@ -26,5 +25,4 @@
 
 (defn -main []
   (router/start-router!)
-  (start-web-server!)
-  )
+  (start-web-server!))

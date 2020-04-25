@@ -2,10 +2,10 @@
   (:require [clojure.core.async :as async :refer (<! <!! >! >!! put! chan go go-loop)]
             [compojure.core :refer :all]
             [compojure.route :as route]
-			[hiccup.page :refer [html5 include-css include-js]]
+            [hiccup.page :refer [html5 include-css include-js]]
             [poker.clj.sente.channels :refer [ring-ajax-get-or-ws-handshake ring-ajax-post]]
-  			[ring.middleware.anti-forgery :as anti-forgery :refer [wrap-anti-forgery]]
-			[ring.middleware.defaults :refer [site-defaults wrap-defaults]]
+            [ring.middleware.anti-forgery :as anti-forgery :refer [wrap-anti-forgery]]
+            [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
             [taoensso.timbre :as timbre :refer (tracef debugf infof warnf errorf)]))
 
 (defn head []
@@ -21,11 +21,11 @@
 
 (defn landing-page []
   (html5
-    (head)
-    [:body {:class "body-container"}
-      [:div#sente-csrf-token {:data-csrf-token (force anti-forgery/*anti-forgery-token*)}]
-     loading-page
-     (include-js "/main.js")]))
+   (head)
+   [:body {:class "body-container"}
+    [:div#sente-csrf-token {:data-csrf-token (force anti-forgery/*anti-forgery-token*)}]
+    loading-page
+    (include-js "/main.js")]))
 
 (defn landing-page-handler []
   {:status 200
@@ -42,5 +42,4 @@
 
 (def app
   (-> app-routes
-      (wrap-defaults site-defaults)
-))
+      (wrap-defaults site-defaults)))

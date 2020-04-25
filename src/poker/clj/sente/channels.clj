@@ -1,8 +1,8 @@
 (ns poker.clj.sente.channels
   (:require [taoensso.sente :as sente]
             [org.httpkit.server :as http-kit]
-			[clj-uuid :as uuid]
-  [taoensso.sente.server-adapters.http-kit :refer (get-sch-adapter)]))
+            [clj-uuid :as uuid]
+            [taoensso.sente.server-adapters.http-kit :refer (get-sch-adapter)]))
 
 (defn uuid-ignore-request [_] (str (uuid/v1)))
 

@@ -27,24 +27,24 @@
 (defn home-page []
   (let [room-id (atom (get-room-id))
         user-id (atom (get-user-id))]
-  (fn []
-    [:span.main {} 
-     [:h1 "P O K E R M A N C E R"]
-     [:div.content
-     [:input 
-      {:type "form"
-       :placeholder "nickname"
-       :value @user-id
-       :on-change    #(reset! user-id (.. % -target -value))}]
-     [:input 
-      {:type "form"
-       :placeholder "room"
-       :value @room-id
-       :on-change    #(reset! room-id (.. % -target -value))}]
-      [:input 
-      {:type "button"
-       :value "start pokering"
-       :on-click #(handle-room-open @room-id @user-id)}]]])))
+    (fn []
+      [:span.main {}
+       [:h1 "P O K E R M A N C E R"]
+       [:div.content
+        [:input
+         {:type "form"
+          :placeholder "nickname"
+          :value @user-id
+          :on-change    #(reset! user-id (.. % -target -value))}]
+        [:input
+         {:type "form"
+          :placeholder "room"
+          :value @room-id
+          :on-change    #(reset! room-id (.. % -target -value))}]
+        [:input
+         {:type "button"
+          :value "start pokering"
+          :on-click #(handle-room-open @room-id @user-id)}]]])))
 
 (defn handle-room-open [room-id user-id]
   (localstorage/set-item! :room-id room-id)
@@ -72,6 +72,7 @@
 ;; -------------------------
 ;; Page mounting component
 
+
 (defn current-page []
   (fn []
     (let [page (:current-page (session/get :route))]
@@ -97,8 +98,7 @@
         (reagent/after-render clerk/after-render!)
         (session/put! :route {:current-page (page-for current-page)
                               :route-params route-params})
-        (clerk/navigate-page! path)
-        ))
+        (clerk/navigate-page! path)))
     :path-exists?
     (fn [path]
       (boolean (reitit/match-by-path ring-router path)))})

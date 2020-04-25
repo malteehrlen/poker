@@ -6,3 +6,7 @@ text-align: center;
 div.content {
 text-align: center;
 }
+
+button.active {
+color: orange;
+}
