@@ -1,6 +1,6 @@
 (ns poker.clj.sente.event-handler
   (:require
-   [poker.clj.rooms :refer (join-room apply-vote drop-user)]
+   [poker.clj.rooms :refer (join-room apply-vote drop-user reveal-vote)]
    [poker.clj.sente.channels :refer [connected-uids chsk-send!]]
    [clojure.core.async :as async :refer (<! <!! >! >!! put! chan go go-loop)]
    [taoensso.timbre :as timbre :refer (tracef debugf infof warnf errorf)]))
@@ -77,8 +77,9 @@
   (println "Disconnected:" uid))
 
 (defmethod event :poker/vote [{:as ev-msg :keys [?data]}]
-  (apply-vote (:uid ev-msg) (:roomname ?data) (:username ?data))
-  (println (format "got vote %s from %s" (:vote ?data) (:?uid ?data))))
+  (apply-vote (:uid ev-msg) (:vote ?data))
+  (println (format "got vote %s from %s" (:vote ?data) (:uid ev-msg))))
 
-(defmethod event :poker/request-reveal [{:as ev-msg :keys [?data]}]
-  (println (format "%s requested a reveal" (:vote ?data) (:?uid ?data))))
+(defmethod event :poker/request-reveal [{:as ev-msg}]
+  (reveal-vote (:uid ev-msg))
+  (println (format "%s requested a reveal" (:uid ev-msg))))

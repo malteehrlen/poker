@@ -1,5 +1,6 @@
 (ns poker.cljs.sente.event-handler
   (:require [poker.cljs.sente.channels :refer (chsk-send!)]
+            [poker.cljs.components.room-state :refer (room-state)]
             [poker.cljs.localstorage :refer (get-user-id get-room-id)]))
 
 (defmulti -event-msg-handler
@@ -23,15 +24,14 @@
 
 (defmethod -event-msg-handler :chsk/recv
   [{:as ev-msg :keys [?data]}]
-  (println "Push event from server: %s" ?data))
+  (println (second ?data))
+  (reset! room-state (second ?data)))
 
 (defmethod -event-msg-handler :chsk/handshake
   [{:as ev-msg :keys [?data]}]
   (let [[?uid ?csrf-token ?handshake-data] ?data]
     (join-room)
     (println "Handshake: %s" ?data)))
-
-;; TODO Add your (defmethod -event-msg-handler <event-id> [ev-msg] <body>)s here...
 
 (defn join-room []
   (chsk-send! [:poker/join-room {:username (get-user-id) :roomname (get-room-id)}]))
