@@ -23,11 +23,12 @@
   :plugins [[lein-nsorg "0.3.0"]
             [lein-pprint         "1.2.0"]
             [lein-ancient        "0.6.15"]
-            [com.cemerick/austin "0.1.6"]
             [lein-cljfmt "0.6.7"]
             [lein-cljsbuild      "1.1.7"]]
 
+  :hooks [leiningen.cljsbuild]
   :main poker.clj.main
+  :aot [poker.clj.main]
 
   :cljsbuild
   {:builds
@@ -39,11 +40,16 @@
 
   :clean-targets ^{:protect false} ["resources/public/main.js"]
 
+;;  :resource-paths ["resources/public"]
+
   :profiles
-  
-  {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
+ {:uberjar {:aot :all
+            :cljsbuild {:builds [{
+    :source-paths ["src/poker/cljs"]
+    :compiler {:output-to "resources/public/main.js"
+               :optimizations :whitespace #_:advanced
+               :pretty-print true}}]}} 
+  :dev {:dependencies [[javax.servlet/servlet-api "2.5"]
                         [ring/ring-mock "0.3.2"]]}})
   :aliases
-(+ 1 1)
-
   {"start" ["do" "clean," "cljsbuild", "once," "ring"]}

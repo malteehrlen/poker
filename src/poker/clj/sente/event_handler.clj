@@ -78,8 +78,8 @@
 
 (defmethod event :poker/vote [{:as ev-msg :keys [?data]}]
   (apply-vote (:uid ev-msg) (:vote ?data))
-  (println (format "got vote %s from %s" (:vote ?data) (:uid ev-msg))))
+  )
 
 (defmethod event :poker/request-reveal [{:as ev-msg}]
   (reveal-vote (:uid ev-msg))
-  (println (format "%s requested a reveal" (:uid ev-msg))))
+  )

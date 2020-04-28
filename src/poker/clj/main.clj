@@ -2,13 +2,14 @@
   (:require [poker.clj.sente.router :as router]
             [org.httpkit.server :as http-kit]
             [taoensso.timbre :as timbre :refer (tracef debugf infof warnf errorf)]
-            [poker.clj.handler :as handler]))
+            [poker.clj.handler :as handler])
+  (:gen-class))
 
 (defonce    web-server_ (atom nil)) ; (fn stop [])
 (defn  stop-web-server! [] (when-let [stop-fn @web-server_] (stop-fn)))
 (defn start-web-server! [& [port]]
   (stop-web-server!)
-  (let [port (or port 0) ; 0 => Choose any available port
+  (let [port (or port 9190) ; 0 => Choose any available port
         ring-handler (var handler/app)
 
         [port stop-fn]

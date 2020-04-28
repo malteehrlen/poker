@@ -1,10 +1,12 @@
 (ns poker.clj.handler
   (:require [clojure.core.async :as async :refer (<! <!! >! >!! put! chan go go-loop)]
+            [clojure.java.io :as io]
             [compojure.core :refer :all]
             [compojure.route :as route]
             [hiccup.page :refer [html5 include-css include-js]]
             [poker.clj.sente.channels :refer [ring-ajax-get-or-ws-handshake ring-ajax-post]]
             [ring.middleware.anti-forgery :as anti-forgery :refer [wrap-anti-forgery]]
+            [ring.middleware.content-type :refer [wrap-content-type]]
             [ring.middleware.defaults :refer [site-defaults wrap-defaults]]
             [taoensso.timbre :as timbre :refer (tracef debugf infof warnf errorf)]))
 
@@ -42,4 +44,5 @@
 
 (def app
   (-> app-routes
-      (wrap-defaults site-defaults)))
+      (wrap-defaults site-defaults)
+      (wrap-content-type)))

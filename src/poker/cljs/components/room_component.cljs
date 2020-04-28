@@ -16,16 +16,13 @@
   (swap! room-state assoc :local-vote vote)
   (send-vote vote))
 
-(defn vote-controls [props]
+(defn vote-controls []
   (let [local-vote (:local-vote @room-state)]
     [:div.panel [(if (= local-vote 0) :button.active :button) {:on-click #(set-and-send-vote 0)} "0"]
      [(if (= local-vote 1) :button.active :button) {:on-click #(set-and-send-vote 1)} "1"]
      [(if (= local-vote 2) :button.active :button) {:on-click #(set-and-send-vote 2)} "2"]
      [(if (= local-vote 3) :button.active :button) {:on-click #(set-and-send-vote 3)} "3"]
      [(if (= local-vote "?") :button.active :button) {:on-click #(set-and-send-vote "?")} "?"]]))
-
-(defn message [props]
-  [:p "its a tie! Fight to the death"])
 
 (defn set-and-request-reveal []
   (swap! room-state assoc :local-vote vote)
@@ -34,11 +31,12 @@
 (defn reveal-button []
   [:div.panel [:button {:on-click #(set-and-request-reveal)} "Reveal"]])
 
-(defn history [props]
+(defn history []
   [:div.results-list
-   [:h3 "previous results"]
-   (for [result (map-indexed (fn [x y] [x y]) (:history @room-state))]
-     ^{:key (first result)} [:div.result {:style {:opacity (- 1.0 (/ (first result) 5.0))}} (clojure.string/join ", " (second result))])])
+   [:h3 "Results"]
+   (for [result (map-indexed (fn [x y] [x y]) (:vote-history @room-state))]
+     (do
+       ^{:key (first result)} [:div.result {:style {:opacity (- 1.0 (/ (first result) 5.0))}} (clojure.string/join ", " (remove nil? (second result)))]))])
 
 (defn room-component []
   (let [user-id (localstorage/get-item :user-id)]
@@ -49,5 +47,4 @@
                                     [members-list]
                                     [vote-controls]
                                     [reveal-button]
-                                    [message]
                                     [history]])))))

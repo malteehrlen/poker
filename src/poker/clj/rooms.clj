@@ -23,14 +23,15 @@
     (swap! rooms assoc-in [room-k uid-k] {:username username :vote nil})
     (swap! users assoc uid-k room-k)
     (push-room-update room-k)
-    (println @rooms)))
+    ))
 
 (defn drop-user [uid]
   (let [room-k ((keyword uid) @users)]
+    (if-not (nil? room-k)
+      (do
     (swap! rooms update-in [room-k] dissoc (keyword uid))
-    (push-room-update room-k))
-  (swap! users dissoc (keyword uid))
-  (println @rooms))
+    (push-room-update room-k)
+  (swap! users dissoc (keyword uid))))))
 
 (defn apply-vote [uid vote]
   (let [room-k ((keyword uid) @users)]
@@ -39,10 +40,10 @@
 
 (defn reveal-vote [uid]
   (let [room-k ((keyword uid) @users)
-        current-votes (map (fn [[_ v]] (:vote v)) (room-k @rooms))]
+        current-votes (shuffle (map (fn [[_ v]] (:vote v)) (room-k @rooms)))]
     (if-not (every? nil? current-votes)
       (do
-        (swap! vote-history assoc room-k (conj (room-k @vote-history) current-votes))
+        (swap! vote-history assoc room-k (conj (take 9 (room-k @vote-history)) current-votes))
         (doseq [user (keys (room-k @rooms))]
           (swap! rooms update-in [room-k user] dissoc :vote))
         (push-room-update room-k)))))

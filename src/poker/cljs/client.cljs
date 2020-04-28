@@ -52,9 +52,12 @@
   (accountant/navigate! (path-for :room {:room-id room-id})))
 
 (defn room-page []
-  (fn []
-    (let [routing-data (session/get :route)
-          room-id (get-in routing-data [:route-params :room-id])]
+  (let [routing-data (session/get :route)
+        room-id (get-in routing-data [:route-params :room-id])]
+    ;; if the user is landing on this url from outside
+    (localstorage/set-item! :room-id room-id)
+    (if (nil? (localstorage/get-item :user-id)) (accountant/navigate! (path-for :index)))
+    (fn []
       [:span.main
        [:h1 (str room-id)]
        [room-component]
