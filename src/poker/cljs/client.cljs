@@ -41,10 +41,7 @@
           :placeholder "room"
           :value @room-id
           :on-change    #(reset! room-id (.. % -target -value))}]
-        [:input
-         {:type "button"
-          :value "start pokering"
-          :on-click #(handle-room-open @room-id @user-id)}]]])))
+        [:button {:on-click #(handle-room-open @room-id @user-id)} "start pokering"]]])))
 
 (defn handle-room-open [room-id user-id]
   (localstorage/set-item! :room-id room-id)
@@ -59,9 +56,10 @@
     (if (nil? (localstorage/get-item :user-id)) (accountant/navigate! (path-for :index)))
     (fn []
       [:span.main
-       [:h1 (str room-id)]
-       [room-component]
-       [:p [:a {:href (path-for :index)} "Back to the lobby"]]])))
+       [:div.content
+        [:h1 (str room-id)]
+        [room-component]
+        [:p.back [:a {:href (path-for :index)} "Back to the lobby"]]]])))
 
 ;; -------------------------
 ;; Translate routes -> page components

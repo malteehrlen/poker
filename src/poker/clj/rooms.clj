@@ -22,16 +22,15 @@
         uid-k (keyword uid)]
     (swap! rooms assoc-in [room-k uid-k] {:username username :vote nil})
     (swap! users assoc uid-k room-k)
-    (push-room-update room-k)
-    ))
+    (push-room-update room-k)))
 
 (defn drop-user [uid]
   (let [room-k ((keyword uid) @users)]
     (if-not (nil? room-k)
       (do
-    (swap! rooms update-in [room-k] dissoc (keyword uid))
-    (push-room-update room-k)
-  (swap! users dissoc (keyword uid))))))
+        (swap! rooms update-in [room-k] dissoc (keyword uid))
+        (push-room-update room-k)
+        (swap! users dissoc (keyword uid))))))
 
 (defn apply-vote [uid vote]
   (let [room-k ((keyword uid) @users)]

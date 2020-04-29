@@ -77,9 +77,7 @@
   (println "Disconnected:" uid))
 
 (defmethod event :poker/vote [{:as ev-msg :keys [?data]}]
-  (apply-vote (:uid ev-msg) (:vote ?data))
-  )
+  (apply-vote (:uid ev-msg) (:vote ?data)))
 
 (defmethod event :poker/request-reveal [{:as ev-msg}]
-  (reveal-vote (:uid ev-msg))
-  )
+  (reveal-vote (:uid ev-msg)))
