@@ -42,7 +42,7 @@
         current-votes (shuffle (map (fn [[_ v]] (:vote v)) (room-k @rooms)))]
     (if-not (every? nil? current-votes)
       (do
-        (swap! vote-history assoc room-k (conj (take 9 (room-k @vote-history)) current-votes))
+        (swap! vote-history assoc room-k (conj (room-k @vote-history) current-votes))
         (doseq [user (keys (room-k @rooms))]
           (swap! rooms update-in [room-k user] dissoc :vote))
         (push-room-update room-k)))))

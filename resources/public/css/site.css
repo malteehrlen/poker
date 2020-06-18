@@ -33,6 +33,10 @@ button {
   margin: 5px;
 }
 
+button.ready {
+  background-color: teal;
+}
+
 button.active {
 color: orange;
 border: 5px solid teal;
