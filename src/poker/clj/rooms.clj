@@ -17,6 +17,10 @@
   (doseq [k (keys (room-k @rooms))]
     (chsk-send! (name k) [:poker/room-state {:room-state (map hide-votes (room-k @rooms)) :vote-history (room-k @vote-history)}])))
 
+(defn push-all-rooms []
+  (doseq [k (keys @rooms)]
+    (push-room-update k)))
+
 (defn join-room [uid roomname username]
   (let [room-k (safe-k roomname)
         uid-k (keyword uid)]
