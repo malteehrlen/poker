@@ -43,7 +43,7 @@
 
 (defn reveal-vote [uid]
   (let [room-k ((keyword uid) @users)
-        current-votes (shuffle (map (fn [[_ v]] (:vote v)) (room-k @rooms)))]
+        current-votes (map (fn [[_ v]] (:vote v)) (room-k @rooms))]
     (if-not (every? nil? current-votes)
       (do
         (swap! vote-history assoc room-k (conj (room-k @vote-history) current-votes))
