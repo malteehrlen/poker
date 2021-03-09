@@ -2,6 +2,11 @@
 /lib
 /classes
 /checkouts
+/node_modules/
+/resources/
+/.lsp/
+poker.tar
+yarn.lock
 pom.xml
 pom.xml.asc
 *.jar
