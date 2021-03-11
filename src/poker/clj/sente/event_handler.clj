@@ -7,8 +7,8 @@
 
 (defmulti event
   "Multimethod to handle Sente `event-msg`s"
-  :id ; Dispatch on event-id
-  )
+  :id) ; Dispatch on event-id
+
 
 (defmethod event
   :default ; Default/fallback case (no other matching handler)

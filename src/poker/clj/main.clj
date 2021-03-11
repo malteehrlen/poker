@@ -6,12 +6,12 @@
             [poker.clj.handler :as handler])
   (:gen-class))
 
-(defonce    web-server_ (atom nil)) ; (fn stop [])
+(defonce web-server_ (atom nil)) ; (fn stop [])
 
 (defn set-interval [callback ms]
   (future (while true (do (Thread/sleep ms) (callback)))))
 
-(defn  stop-web-server! [] (when-let [stop-fn @web-server_] (stop-fn)))
+(defn stop-web-server! [] (when-let [stop-fn @web-server_] (stop-fn)))
 
 (defn start-web-server! [& [port]]
   (stop-web-server!)
