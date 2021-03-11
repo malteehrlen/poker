@@ -5,8 +5,6 @@
    [clojure.core.async :as async :refer (<! <!! >! >!! put! chan go go-loop)]
    [taoensso.timbre :as timbre :refer (tracef debugf infof warnf errorf)]))
 
-(defonce broadcast-enabled?_ (atom true))
-
 (defmulti event
   "Multimethod to handle Sente `event-msg`s"
   :id ; Dispatch on event-id
@@ -14,10 +12,10 @@
 
 (defmethod event
   :default ; Default/fallback case (no other matching handler)
-  [{:as ev-msg :keys [event id ?data ring-req ?reply-fn send-fn]}]
+  [{:keys [event ring-req ?reply-fn]}]
   (let [session (:session ring-req)
         uid (:uid session)]
-    (debugf "Unhandled event: %s" event)
+    (debugf "Unhandled event: %s, uid: %s" event, uid)
     (when ?reply-fn
       (?reply-fn {:umatched-event-as-echoed-from-from-server event}))))
 
@@ -28,9 +26,8 @@
   (drop-user uid)
   (println "Disconnected:" uid))
 
-(defmethod event :chsk/handshake [{:as ev-msg :keys [?data]}]
-  (let [[?uid ?csrf-token ?handshake-data] ?data]
-    (println "Handshake:" ?data)))
+(defmethod event :chsk/handshake [{:keys [?data]}]
+  (println "Handshake:" ?data))
 
 (defmethod event :chsk/ws-ping [_])
 

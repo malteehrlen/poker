@@ -4,6 +4,7 @@
 /checkouts
 /node_modules/
 /.lsp/
+/resources/public/main.js
 yarn.lock
 poker.tar
 pom.xml

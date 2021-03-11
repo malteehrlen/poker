@@ -6,12 +6,10 @@
   (when-let [el (.getElementById js/document "sente-csrf-token")]
     (.getAttribute el "data-csrf-token")))
 
-(let [{:keys [chsk ch-recv send-fn state]}
+(let [{:keys [ch-recv send-fn]}
       (sente/make-channel-socket! "/chsk"
                                   ?csrf-token
                                   {:type :ws})]
-  (def chsk       chsk)
   (def ch-chsk    ch-recv)
-  (def chsk-send! send-fn)
-  (def chsk-state state))
+  (def chsk-send! send-fn))
 

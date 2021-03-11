@@ -7,28 +7,27 @@
   :id)
 
 (defn event-msg-handler
-  [{:as ev-msg :keys [id ?data event]}]
+  [{:as ev-msg}]
   (-event-msg-handler ev-msg))
 
 (defmethod -event-msg-handler
   :default
-  [{:as ev-msg :keys [event]}]
+  [{:keys [event]}]
   (println "Unhandled event: %s" event))
 
-(defmethod -event-msg-handler :chsk/state [{:as ev-msg :keys [?data]}]
+(defmethod -event-msg-handler :chsk/state [{:keys [?data]}]
   (if (:first-open? (second ?data))
     (println "Channel socket successfully established!")))
 
 (defmethod -event-msg-handler :chsk/recv
-  [{:as ev-msg :keys [?data]}]
+  [{:keys [?data]}]
   (reset! room-state (second ?data)))
-
-(defmethod -event-msg-handler :chsk/handshake
-  [{:as ev-msg :keys [?data]}]
-  (join-room))
 
 (defn join-room []
   (chsk-send! [:poker/join-room {:username (get-user-id) :roomname (get-room-id)}]))
+
+(defmethod -event-msg-handler :chsk/handshake []
+  (join-room))
 
 (defn send-vote [vote]
   (chsk-send! [:poker/vote {:vote vote}]))
