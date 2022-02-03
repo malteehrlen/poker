@@ -3,8 +3,7 @@
             [reagent.core :as r]
             [poker.cljs.components.room-state :refer (room-state)]
             [poker.cljs.sente.event-handler :refer (send-vote request-reveal)]
-            [poker.cljs.localstorage :as localstorage]
-            [poker.cljs.sente.router :as router]))
+            [poker.cljs.localstorage :as localstorage]))
 
 (def local-room-state (r/atom {}))
 (def round-count (atom 0))
@@ -55,9 +54,9 @@
   (let [user-id (localstorage/get-item :user-id)]
     (if (clojure.string/blank? user-id)
       [:p "user-id not set"]
-      (do (router/start-router!) (fn []
+      (fn []
                                    [:div.room
                                     [vote-controls]
                                     [reveal-button]
                                     [members-list]
-                                    [history]])))))
+                                    [history]]))))

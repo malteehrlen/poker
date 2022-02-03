@@ -26,8 +26,12 @@
 (defn join-room []
   (chsk-send! [:poker/join-room {:username (get-user-id) :roomname (get-room-id)}]))
 
+(defn leave-room []
+  (chsk-send! [:poker/leave]))
+
 (defmethod -event-msg-handler :chsk/handshake []
   (join-room))
+
 
 (defn send-vote [vote]
   (chsk-send! [:poker/vote {:vote vote}]))

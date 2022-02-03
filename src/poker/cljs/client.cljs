@@ -1,9 +1,10 @@
 (ns poker.cljs.client
-  (:require
-   [accountant.core :as accountant]
+  (:require [accountant.core :as accountant]
    [clerk.core :as clerk]
    [poker.cljs.components.room-component :as room-component :refer [room-component]]
    [poker.cljs.localstorage :as localstorage :refer (get-room-id get-user-id)]
+   [poker.cljs.sente.event-handler :refer (leave-room join-room)]
+   [poker.cljs.sente.router :as router]
    [reagent.core :as reagent :refer [atom]]
    [reagent.session :as session]
    [reitit.frontend :as reitit]))
@@ -24,6 +25,12 @@
 ;; -------------------------
 ;; Page components
 
+(defn handle-room-open [room-id user-id]
+  (do
+  (localstorage/set-item! :room-id room-id)
+  (localstorage/set-item! :user-id user-id)
+  (accountant/navigate! (path-for :room {:room-id room-id}))))
+
 (defn home-page []
   (let [room-id (atom (get-room-id))
         user-id (atom (get-user-id))]
@@ -43,23 +50,20 @@
           :on-change    #(reset! room-id (.. % -target -value))}]
         [:button {:on-click #(handle-room-open @room-id @user-id)} "start pokering"]]])))
 
-(defn handle-room-open [room-id user-id]
-  (localstorage/set-item! :room-id room-id)
-  (localstorage/set-item! :user-id user-id)
-  (accountant/navigate! (path-for :room {:room-id room-id})))
-
 (defn room-page []
   (let [routing-data (session/get :route)
         room-id (get-in routing-data [:route-params :room-id])]
-    ;; if the user is landing on this url from outside
-    (localstorage/set-item! :room-id room-id)
-    (if (nil? (localstorage/get-item :user-id)) (accountant/navigate! (path-for :index)))
-    (fn []
-      [:span.main
-       [:div.content
-        [:h1 (str room-id)]
-        [room-component]
-        [:p.back [:a {:href (path-for :index)} "Back to the lobby"]]]])))
+    (do
+      (localstorage/set-item! :room-id room-id)
+      (if (nil? (localstorage/get-item :user-id)) (accountant/navigate! (path-for :index)))
+      (router/start-router!)
+      (join-room)
+      (fn []
+        [:span.main
+         [:div.content
+          [:h1 (str room-id)]
+          [room-component]
+          [:p.back [:a {:on-click #(leave-room) :href (path-for :index)} "Back to the lobby"]]]]))))
 
 ;; -------------------------
 ;; Translate routes -> page components
