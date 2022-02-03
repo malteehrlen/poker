@@ -22,6 +22,8 @@
 
 (defn vote-controls [] (let [local-vote (:local-vote @local-room-state)]
                          [:div.panel [(if (= local-vote 0) :button.active :button) {:on-click #(set-and-send-vote 0)} "0"]
+                          [(if (= local-vote 0.25) :button.active :button) {:on-click #(set-and-send-vote 0.25)} "0.25"]
+                          [(if (= local-vote 0.5) :button.active :button) {:on-click #(set-and-send-vote 0.5)} "0.5"]
                           [(if (= local-vote 1) :button.active :button) {:on-click #(set-and-send-vote 1)} "1"]
                           [(if (= local-vote 2) :button.active :button) {:on-click #(set-and-send-vote 2)} "2"]
                           [(if (= local-vote 3) :button.active :button) {:on-click #(set-and-send-vote 3)} "3"]
