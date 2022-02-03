@@ -34,6 +34,8 @@
       (do
         (swap! rooms update-in [room-k] dissoc (keyword uid))
         (push-room-update room-k)
+        (if (empty? (keys (room-k @rooms)))
+          (swap! vote-history dissoc room-k))
         (swap! users dissoc (keyword uid))))))
 
 (defn apply-vote [uid vote]

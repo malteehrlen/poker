@@ -15,7 +15,7 @@
 
 (defn start-web-server! [& [port]]
   (stop-web-server!)
-  (let [port (or port 9190) ; 0 => Choose any available port
+  (let [port (or port 9190)
         ring-handler (var handler/app)
         job (set-interval rooms/push-all-rooms 5000)
         [port stop-fn]
