@@ -55,6 +55,16 @@ input[type = form] {
   margin: 5px;
 }
 
+div.description {
+    min-width: 500px;
+    max-width: 50%;
+    margin: 0 auto;
+}
+
+p.description {
+    text-align: left;
+}
+
 p.back {
 position: fixed;
 bottom: 0;
