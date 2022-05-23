@@ -65,7 +65,6 @@
       (localstorage/set-item! :room-id room-id)
       (if (nil? (localstorage/get-item :user-id)) (accountant/navigate! (path-for :index)))
       (router/start-router!)
-      (join-room)
       (fn []
         [:span.main
          [:div.content
